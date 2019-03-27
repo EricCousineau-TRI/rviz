@@ -53,7 +53,7 @@ RosNodeAbstraction::get_node_name() const
   return raw_node_->get_name();
 }
 
-std::map<std::string, std::vector<std::string>>
+std::map<std::string, std::vector<std::vector<std::string>>>
 RosNodeAbstraction::get_topic_names_and_types() const
 {
   return raw_node_->get_topic_names_and_types();

@@ -79,7 +79,7 @@ public:
    * \return map of topic names and their types
    */
   RVIZ_COMMON_PUBLIC
-  std::map<std::string, std::vector<std::string>>
+  std::map<std::string, std::vector<std::vector<std::string>>>
   get_topic_names_and_types() const override;
 
   // TODO(wjwwood): think about a suitable way to extend the abstraction to also cover subscriptions

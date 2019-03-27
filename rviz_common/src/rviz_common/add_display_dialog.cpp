@@ -145,25 +145,26 @@ void getPluginGroups(
   std::vector<std::string> * unvisualizable,
   ros_integration::RosNodeAbstractionIface::WeakPtr rviz_ros_node)
 {
-  std::map<std::string, std::vector<std::string>> topic_names_and_types =
+  std::map<std::string, std::vector<std::vector<std::string>>> topic_names_and_types =
     rviz_ros_node.lock()->get_topic_names_and_types();
 
   for (const auto & map_pair : topic_names_and_types) {
     QString topic = QString::fromStdString(map_pair.first);
-    if (map_pair.second.empty()) {
-      throw std::runtime_error("topic '" + map_pair.first + "' unexpectedly has not types.");
+    if (map_pair.second.empty() || map_pair.second[0].empty()) {
+      throw std::runtime_error("topic '" + map_pair.first + "' unexpectedly has no types.");
     }
+    std::string datatype_stdstring = map_pair.second[0].front() + "/" + map_pair.second[0].back();
     if (map_pair.second.size() > 1) {
       std::stringstream ss;
       ss << "topic '" << map_pair.first <<
         "' has more than one types associated, rviz will arbitrarily use the type '" <<
-        map_pair.second[0] << "' -- all types for the topic:";
+        datatype_stdstring << "' -- all types for the topic:";
       for (const auto & topic_type_name : map_pair.second) {
-        ss << " '" << topic_type_name << "'";
+        ss << " '" << topic_type_name.front() << "/" << topic_type_name.back() << "'";
       }
       RVIZ_COMMON_LOG_WARNING(ss.str());
     }
-    QString datatype = QString::fromStdString(map_pair.second[0]);
+    QString datatype = QString::fromStdString(datatype_stdstring);
 
     if (datatype_plugins.contains(datatype)) {
       if (groups->empty() ||

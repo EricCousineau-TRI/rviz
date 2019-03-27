@@ -73,12 +73,13 @@ void RosTopicProperty::fillTopicList()
   clearOptions();
 
   std::string std_message_type = message_type_.toStdString();
-  std::map<std::string, std::vector<std::string>> published_topics =
+  std::map<std::string, std::vector<std::vector<std::string>>> published_topics =
     rviz_ros_node_.lock()->get_topic_names_and_types();
 
   for (const auto & topic : published_topics) {
     // Only add topics whose type matches.
-    for (const auto & type : topic.second) {
+    for (const auto & type_parts : topic.second) {
+      std::string type = type_parts.front() + "/" + type_parts.back();
       // TODO(Martin-Idel-SI): revisit after message_traits become available.
       // We only want to show the types of the topic we subscribe to, however, currently we can't
       // get the type, so std_message_type will always be empty --> show all topics instead

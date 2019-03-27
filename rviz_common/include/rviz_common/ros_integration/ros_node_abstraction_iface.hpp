@@ -60,7 +60,7 @@ public:
 
   virtual std::string get_node_name() const = 0;
 
-  virtual std::map<std::string, std::vector<std::string>>
+  virtual std::map<std::string, std::vector<std::vector<std::string>>>
   get_topic_names_and_types() const = 0;
 
   // TODO(anhosi): remove once the RosNodeAbstraction is extended to handle subscriptions
